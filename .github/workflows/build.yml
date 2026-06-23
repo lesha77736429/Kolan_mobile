@@ -32,5 +32,10 @@ jobs:
 
     - name: Build Android APK
       run: |
+        # Автоматически принимаем все лицензии Android SDK
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
         export BUILDOZER_WARN_ON_ROOT=0
-        buildozer -v android debug
+        
+        # Запускаем сборку (Buildozer сам применит соглашение благодаря параметрам)
+        yes | buildozer -v android debug
