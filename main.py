@@ -3,14 +3,13 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextField
-from kivymd.uix.button import MDRaisedButton
+from kivymd.uix.button import MDButton, MDButtonText
 from kivy.clock import Clock
 import socket
 import json
 import hashlib
 
-# Укажи здесь IP своего старого ПК (сервера)
-SERVER_IP = "192.168.0.106"  
+SERVER_IP = "192.168.0.106"  # <-- Твой IP старого ПК (сервера)
 SERVER_PORT = 55555
 
 def hash_password(pw: str) -> str:
@@ -23,20 +22,22 @@ class LoginScreen(MDScreen):
         layout = MDBoxLayout(orientation='vertical', padding=30, spacing=20, adaptive_height=True)
         layout.pos_hint = {"center_x": 0.5, "center_y": 0.5}
         
-        title = MDLabel(text="Kolan Mobile", font_style="H4", halign="center")
+        title = MDLabel(text="Kolan Mobile", halign="center")
         layout.add_widget(title)
         
-        self.phone_input = MDTextField(hint_text="Номер телефона", mode="rectangle")
+        self.phone_input = MDTextField(hint_text="Номер телефона", mode="outlined")
         layout.add_widget(self.phone_input)
         
-        self.password_input = MDTextField(hint_text="Пароль", password=True, mode="rectangle")
+        self.password_input = MDTextField(hint_text="Пароль", password=True, mode="outlined")
         layout.add_widget(self.password_input)
         
-        login_btn = MDRaisedButton(text="Войти", pos_hint={"center_x": 0.5}, size_hint_x=1)
+        # Обновили кнопку под формат KivyMD 2.0
+        login_btn = MDButton(style="filled", pos_hint={"center_x": 0.5})
+        login_btn.add_widget(MDButtonText(text="Войти"))
         login_btn.bind(on_release=self.auth_on_server)
         layout.add_widget(login_btn)
         
-        self.status_label = MDLabel(text="", halign="center", theme_text_color="Error")
+        self.status_label = MDLabel(text="", halign="center")
         layout.add_widget(self.status_label)
         
         self.add_widget(layout)
@@ -49,7 +50,6 @@ class LoginScreen(MDScreen):
             self.status_label.text = "Заполните все поля!"
             return
             
-        # Наша рабочая сетевая логика
         try:
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client_socket.settimeout(3.0)
@@ -66,8 +66,6 @@ class LoginScreen(MDScreen):
             if packet:
                 res = json.loads(packet.decode('utf-8'))
                 if res.get("status") == "success":
-                    self.status_label.theme_text_color = "Custom"
-                    self.status_label.text_color = (0, 1, 0, 1) # Зеленый
                     self.status_label.text = f"Успешный вход! Привет, {res.get('name')}"
                 else:
                     self.status_label.text = res.get("message", "Ошибка входа")
@@ -78,7 +76,7 @@ class LoginScreen(MDScreen):
 class KolanMobileApp(MDApp):
     def build(self):
         self.theme_cls.theme_style = "Dark"
-        self.theme_cls.primary_palette = "Blue"
+        self.theme_cls.primary_palette = "Olive" # В KivyMD 2.0 используются новые цвета
         return LoginScreen()
 
 if __name__ == "__main__":
