@@ -6,14 +6,19 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
 
-# Указываем самые свежие версии библиотек напрямую из репозиториев
+# Оставляем стабильные версии библиотек
 requirements = python3,kivy==2.3.0,https://github.com/kivymd/KivyMD/archive/master.zip,pillow
 
 orientation = portrait
 fullscreen = 1
 android.archs = armeabi-v7a, arm64-v8a
 android.allow_backup = True
-android.api = 33
+
+# ЖЕСТКО ФИКСИРУЕМ ВЕРСИИ ДЛЯ GOOGLE (это решит проблему с NDK 27)
+android.api = 34
+android.minapi = 24
+android.ndk = 26b
+android.ndk_api = 24
 
 [buildozer]
 log_level = 2
