@@ -5,13 +5,15 @@ package.domain = org.test
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
-requirements = python3,kivy==2.3.0,kivymd==1.2.0,pillow
+
+# Указываем самые свежие версии библиотек напрямую из репозиториев
+requirements = python3,kivy==2.3.0,https://github.com/kivymd/KivyMD/archive/master.zip,pillow
 
 orientation = portrait
-osx.kivy_version = 2.3.0
 fullscreen = 1
 android.archs = armeabi-v7a, arm64-v8a
 android.allow_backup = True
+android.api = 33
 
 [buildozer]
 log_level = 2
