@@ -32,10 +32,11 @@ jobs:
 
     - name: Build Android APK
       run: |
-        # Автоматически принимаем все лицензии Android SDK
         mkdir -p ~/.android
         touch ~/.android/repositories.cfg
+        
+        # Сбрасываем дефолтные пути GitHub к NDK, чтобы Buildozer скачал правильный NDK 26b
+        unset ANDROID_NDK_HOME
         export BUILDOZER_WARN_ON_ROOT=0
         
-        # Запускаем сборку (Buildozer сам применит соглашение благодаря параметрам)
         yes | buildozer -v android debug
